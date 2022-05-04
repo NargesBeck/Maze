@@ -1,0 +1,5 @@
+Game Idea:
+A simple maze-like environment with mutiple locked doors, needing their own keys. Player would gather keys by hovering over them.
+
+Implementation:
+I will be using bitwise operations to store the types of keys user has in one single int variable (because I challenged myself to).
