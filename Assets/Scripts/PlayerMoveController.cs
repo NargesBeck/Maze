@@ -54,7 +54,7 @@ public class PlayerMoveController : MonoBehaviour
 
         if (RotationDelta != 0)
         {
-            CamTransform.eulerAngles = new Vector3(0, CamTransform.eulerAngles.y + RotationDelta * 5, 0);
+            CamTransform.eulerAngles = new Vector3(0, CamTransform.eulerAngles.y + RotationDelta * 2, 0);
         }
 
         if (MovementDelta != 0)
@@ -75,6 +75,12 @@ public class PlayerMoveController : MonoBehaviour
         if (key != null)
         {
             key.IAmPickedUp();
+        }
+
+        Door door = hit.gameObject.GetComponent<Door>();
+        if (door!= null)
+        {
+            door.UnlockMeIfPossible();
         }
     }
     

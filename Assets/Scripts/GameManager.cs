@@ -22,7 +22,9 @@ public class GameManager : MonoBehaviour
     private const int DoorYellow = 0b_0100;
 
     [SerializeField]
-    private TextMesh TextMesh;
+    private TextMesh TextInventory;
+    [SerializeField]
+    private TextMesh TextLogs;
 
     public enum DoorTypes
     {
@@ -45,10 +47,42 @@ public class GameManager : MonoBehaviour
     {
         KeysInventory |= (int)key;
         LogKeyInventoryOnTextMesh();
+        LogKeyEvent();
+    }
+
+    public void DoorWasUnlocked()
+    {
+        LogDoorEvent();
     }
 
     private void LogKeyInventoryOnTextMesh()
     {
-        TextMesh.text = KeysInventory.ToString();
+        TextInventory.text = System.Convert.ToString(KeysInventory, 2);
+    }
+
+    private void LogKeyEvent()
+    {
+        string keyEvent = "Key was added to inventory.";
+        LogEvent(keyEvent);
+    }
+
+    private void LogDoorEvent()
+    {
+        string doorEvent = "Door unlocked.";
+        LogEvent(doorEvent);
+    }
+
+    private void LogEvent(string content)
+    {
+        TextLogs.gameObject.SetActive(true);
+        TextLogs.text = content;
+        StopAllCoroutines();
+        StartCoroutine(DelayToDissappearLogs());
+    }
+
+    private IEnumerator DelayToDissappearLogs()
+    {
+        yield return new WaitForSecondsRealtime(2);
+        TextLogs.gameObject.SetActive(false);
     }
 }

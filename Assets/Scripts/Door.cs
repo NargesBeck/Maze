@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public void CanIBeUnlocked()
-    {
+    [SerializeField]
+    private GameManager.DoorTypes DoorType;
 
+    public void UnlockMeIfPossible()
+    {
+        if(GameManager.Instance.DoesHaveKeyFor(DoorType))
+        {
+            GameManager.Instance.DoorWasUnlocked();
+            Destroy(gameObject);
+        }
     }
 }
