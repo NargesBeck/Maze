@@ -1,0 +1,13 @@
+Library/*
+Temp/*
+ProjectSettings/*
+*.csproj
+*.sln
+*.pidb
+*.userprefs
+*.unityproj
+\obj/*
+Logs/*
+Logs/shadercompiler-UnityShaderCompiler.exe0.log
+Logs/AssetImportWorker0.log
+Logs/shadercompiler-AssetImportWorker0.log
