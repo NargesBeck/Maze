@@ -7,41 +7,75 @@ public class PlayerMoveController : MonoBehaviour
     [SerializeField]
     private Transform CamTransform;
 
+    private CharacterController characterController;
+    private CharacterController CharacterController
+    {
+        get
+        {
+            if (characterController == null)
+            {
+                characterController = GetComponent<CharacterController>();
+            }
+            return characterController;
+        }
+    }
+
     private bool KeepLookingAt, KeepMovingForward;
+    private int RotationDelta;
+    private int MovementDelta;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            KeepLookingAt = true;
+            RotationDelta = -1;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            RotationDelta = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            RotationDelta = 0;
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            KeepLookingAt = false;
+            MovementDelta = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            MovementDelta = -1;
+        }
+        if(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            MovementDelta = 0;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (RotationDelta != 0)
         {
-            KeepMovingForward = true;
+            CamTransform.eulerAngles = new Vector3(0, CamTransform.eulerAngles.y + RotationDelta * 5, 0);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (MovementDelta != 0)
         {
-            KeepMovingForward = false;
-        }
-
-        KeepLookingAt = true;
-        if (KeepLookingAt)
-        {
-            Debug.Log(Input.mousePosition);
-            CamTransform.LookAt(Input.mousePosition);
-            CamTransform.eulerAngles = new Vector3(0, CamTransform.eulerAngles.y, CamTransform.eulerAngles.z);
-        }
-
-        if (KeepMovingForward)
-        {
-            CamTransform.position += CamTransform.forward / 5;
+            MoveMe(MovementDelta);
+            //CamTransform.position += CamTransform.forward / 5 * MovementDelta;
         }
     }
+
+    private void MoveMe(int direction)
+    {
+        CharacterController.Move(CamTransform.forward / 5 * MovementDelta);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Key key = hit.gameObject.GetComponent<Key>();
+        if (key != null)
+        {
+            key.IAmPickedUp();
+        }
+    }
+    
 }
